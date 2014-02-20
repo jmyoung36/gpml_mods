@@ -33,11 +33,23 @@ if nargout>1                               % do we want the marginal likelihood?
     dnlZ = hyp;                                 % allocate space for derivatives
     Q = solve_chol(L,eye(n))/sn2 - alpha*alpha';    % precompute for convenience
     for i = 1:numel(hyp.cov)
-      dnlZ.cov(i) = sum(sum(Q.*feval(cov{:}, hyp.cov, K, [], i)))/2;
+      % getting the derivatives wrt covariance hyperparameters here  
+      % replace with precomputed kernel version  
+      % dnlZ.cov(i) = sum(sum(Q.*feval(cov{:}, hyp.cov, x, [], i)))/2;  
+      dnlZ.cov(i) = sum(sum(Q.*feval(cov, hyp.cov, K_cell, i)))/2;
     end
     dnlZ.lik = sn2*trace(Q);
-    for i = 1:numel(hyp.mean), 
-      dnlZ.mean(i) = -feval(meanfunc{:}, hyp.mean, K, i)'*alpha;
+    for i = 1:numel(hyp.mean),
+      % getting derivatives again, this time wrt mean function hyperparameters  
+      % replace with precomputed mean version
+      % dm = feval(mean{:}, hyp.mean, x, i);
+      % for the moment ASSUME a constant mean - derivative just gives a
+      % vector of ones
+      % update at some point to actually use mean function
+      % dnlZ.mean(i) = -feval(mean{:}, hyp.mean, x, i)'*alpha;  
+      %dnlZ.mean(i) = -feval(meanfunc{:}, hyp.mean, K_cell, i)'*alpha;
+      dm = ones(n,1); 
+      dnlZ.mean(i) = -dlZ'*dm;
     end
   end
 end
