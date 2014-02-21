@@ -100,7 +100,6 @@ if isempty(i)
 else
     % if i is 'diag', return the diagonal of K_sum
     if strcmp(i,'diag')
-        disp('foo')
         if rows == columns
             K_out = diag(K_sum);
         else
