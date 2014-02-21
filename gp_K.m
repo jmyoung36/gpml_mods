@@ -223,9 +223,12 @@ else
       fs2(id) = kss + sum(Ks_id.*(L*Ks_id),1)';                 % predictive variances
     end
     fs2(id) = max(fs2(id),0);   % remove numerical noise i.e. negative variances
-    if nargin<9
+    
+    % one extra input for prediction now
+    % if nargin<9
+    if nargin<10
       [lp(id) ymu(id) ys2(id)] = lik(hyp.lik, [], fmu(id), fs2(id));
-    else
+    else        
       [lp(id) ymu(id) ys2(id)] = lik(hyp.lik, ys(id), fmu(id), fs2(id));
     end
     nact = id(end);          % set counter to index of last processed data point
