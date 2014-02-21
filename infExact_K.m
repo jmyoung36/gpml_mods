@@ -10,7 +10,7 @@ function [post nlZ dnlZ] = infExact_K(hyp, cov, lik, meanfunc, K_cell, y)
 %
 % Modified by Jonathan Young, 2014-02-20 to use precomputed kernels
 
-likstr = lik; if ~ischar(lik), likstr = func2str(lik); end 
+likstr = lik; if ~ischar(lik), likstr = func2str(lik); end
 if ~strcmp(likstr,'likGauss')               % NOTE: no explicit call to likGauss
   error('Exact inference only possible with Gaussian likelihood');
 end
@@ -37,6 +37,7 @@ if nargout>1                               % do we want the marginal likelihood?
       % replace with precomputed kernel version  
       % dnlZ.cov(i) = sum(sum(Q.*feval(cov{:}, hyp.cov, x, [], i)))/2;  
       dnlZ.cov(i) = sum(sum(Q.*feval(cov, hyp.cov, K_cell, i)))/2;
+      
     end
     dnlZ.lik = sn2*trace(Q);
     for i = 1:numel(hyp.mean),
@@ -48,8 +49,10 @@ if nargout>1                               % do we want the marginal likelihood?
       % update at some point to actually use mean function
       % dnlZ.mean(i) = -feval(mean{:}, hyp.mean, x, i)'*alpha;  
       %dnlZ.mean(i) = -feval(meanfunc{:}, hyp.mean, K_cell, i)'*alpha;
-      dm = ones(n,1); 
-      dnlZ.mean(i) = -dlZ'*dm;
+      dm = ones(n,1);
+      
+      dnlZ.mean(i) = -dm' * alpha;
+      
     end
   end
 end
