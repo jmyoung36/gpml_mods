@@ -62,6 +62,8 @@ function [varargout] = gp_OR_K(hyp, inf, mean, cov, lik,  K_t, y, K_p, K_tp, ys)
 % Modified a second time by Jonathan Young Jan 2014 to also ensure
 % compatibility with precomputed kernel convariance functions
 
+
+
 if nargin<7 || nargin>10
   disp('Usage: [nlZ dnlZ          ] = gp(hyp, inf, mean, cov, lik, K_t, y);')
   disp('   or: [ymu ys2 fmu fs2   ] = gp(hyp, inf, mean, cov, lik, K_t, y, K_p, K_tp);')

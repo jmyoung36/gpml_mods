@@ -26,8 +26,8 @@ if nargin==2
   A = c*ones(size(K{1},1),1);                                       % evaluate mean
 else
   if i==1
-    A = ones(size(K,1),1);                                          % derivative
+    A = ones(size(K{1},1),1);                                          % derivative
   else
-    A = zeros(size(K,1),1);
+    A = zeros(size(K{1},1),1);
   end
 end
